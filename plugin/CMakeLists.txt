@@ -30,6 +30,14 @@ if (MSVC AND AIMP_MSVC_STATIC_RUNTIME)
   set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 endif()
 
+# CMake's Release default for GCC and Clang is -O3; -O2 makes the Linux binary a
+# fifth smaller (measured: 3.9 -> 3.2 MB stripped) and builds a little faster.
+# The plugin waits on the network and the player, not on its own loops.
+if (NOT MSVC)
+  string(REPLACE "-O3" "-O2" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+  string(REPLACE "-O3" "-O2" CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
+endif()
+
 # Auto-collect everything under src/ — adding/removing files no longer requires
 # editing this file. CONFIGURE_DEPENDS makes Ninja/MSBuild re-run CMake when the
 # set of matching files changes.

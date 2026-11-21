@@ -64,6 +64,9 @@ if (-not $NoStart)
 {
     Write-Host ""
     Write-Host "==> Starting AIMP in WSL" -ForegroundColor Cyan
-    Start-Process -FilePath wsl.exe -ArgumentList '-e', 'bash', '-lc', '"exec \"${AIMP_DIR:-/opt/aimp}/AIMP\""' -WindowStyle Hidden
+    # WSLg sets no session type or desktop, and AIMP from v6.00 build 3097 refuses
+    # to start without them ("App cannot be run on  on ."); it runs on X11 there.
+    $session = 'export XDG_SESSION_TYPE=${XDG_SESSION_TYPE:-x11} XDG_CURRENT_DESKTOP=${XDG_CURRENT_DESKTOP:-ubuntu:GNOME}'
+    Start-Process -FilePath wsl.exe -ArgumentList '-e', 'bash', '-lc', "`"$session; exec \`"`${AIMP_DIR:-/opt/aimp}/AIMP\`"`"" -WindowStyle Hidden
 }
 if ($deployExitCode -ne 0) { throw "deploy-linux.sh failed with exit code $deployExitCode." }
