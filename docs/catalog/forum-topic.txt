@@ -40,9 +40,7 @@ AIMP Remote Control - удалённое управление плеером п�
 
 [b]Скриншоты[/b]
 
-[img]https://i.ibb.co/v4rQg7Bp/aimp-remote-control-web-ru.png[/img]
-
-[img]https://i.ibb.co/NdVZfZqW/aimp-remote-control-plugin-ru.png[/img]
+[url=https://i.ibb.co/v4rQg7Bp/aimp-remote-control-web-ru.png][img width=650 height=420]https://i.ibb.co/v4rQg7Bp/aimp-remote-control-web-ru.png[/img][/url] [url=https://i.ibb.co/NdVZfZqW/aimp-remote-control-plugin-ru.png][img width=520 height=420]https://i.ibb.co/NdVZfZqW/aimp-remote-control-plugin-ru.png[/img][/url]
 
 [b]Настройка[/b]
 
@@ -82,4 +80,4 @@ AIMP Remote Control - удалённое управление плеером п�
 
 [b]Скачать[/b]
 
-Во вложении, а также в [url=https://github.com/tarcode-apps/AIMPRemoteControl/releases/latest]релизах на GitHub[/url].
+[url=https://github.com/tarcode-apps/AIMPRemoteControl/releases/latest/download/aimp_remote_control.aimppack]aimp_remote_control.aimppack[/url] - последняя версия, из [url=https://github.com/tarcode-apps/AIMPRemoteControl/releases/latest]релизов на GitHub[/url]. Во вложение файл не помещается.

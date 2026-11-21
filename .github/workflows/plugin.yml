@@ -225,7 +225,21 @@ jobs:
         with:
           name: aimp_remote_control.aimppack
 
+      # The catalog bundle goes out with the release as one file: the forum takes
+      # no attachment of this size, and a build artifact needs a login and expires.
+      - uses: actions/download-artifact@v7
+        with:
+          name: aimp_remote_control-catalog
+          path: catalog
+
+      - name: Pack the catalog bundle
+        run: |
+          set -eu
+          (cd catalog && zip -r ../aimp_remote_control-catalog.zip .)
+
       - uses: softprops/action-gh-release@v3
         with:
-          files: aimp_remote_control.aimppack
+          files: |
+            aimp_remote_control.aimppack
+            aimp_remote_control-catalog.zip
           body_path: release-notes.md

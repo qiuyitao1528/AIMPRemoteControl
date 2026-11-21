@@ -14,8 +14,16 @@ catalog bundle», артефакт `aimp_remote_control-catalog`).
 | `readme.txt`                   | описание и установка (RU/EN), лежит внутри архива    | [readme.txt](readme.txt)                                                                                   |
 
 `.zip` и `.aimppack` — один и тот же архив, CI копирует его под вторым именем: правила требуют `%plugin_name%.zip`, а
-сам каталог раздаёт плагины как `.aimppack`. В тему на форуме прикладывайте `.aimppack` — так плагин ставится из плеера,
-и это совпадает с тем, что написано в разделе «Установка» самой темы.
+сам каталог раздаёт плагины как `.aimppack`.
+
+Во вложение на форуме архив не помещается (лимит 4096 КБ), поэтому оба файла лежат в релизе на GitHub:
+
+| Файл релиза                       | Для кого                                           | Постоянная ссылка на последнюю версию                                                                        |
+| --------------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `aimp_remote_control.aimppack`    | пользователям, ставится из плеера                  | <https://github.com/tarcode-apps/AIMPRemoteControl/releases/latest/download/aimp_remote_control.aimppack>    |
+| `aimp_remote_control-catalog.zip` | модератору каталога: весь комплект из таблицы выше | <https://github.com/tarcode-apps/AIMPRemoteControl/releases/latest/download/aimp_remote_control-catalog.zip> |
+
+Ссылки вида `releases/latest/download/<имя>` всегда ведут на файл последнего релиза, так что в теме их менять не нужно.
 
 Тема плагина на форуме — <https://aimp.ru/forum/index.php?topic=78138.0>; она же в поле `Topic:` файла описания.
 
@@ -75,10 +83,10 @@ hostingkartinok или imgur. Сейчас оба залиты на imgbb; за�
 1. Поднять версию в `plugin/src/pluginInfo.h`, дописать её в [CHANGELOG.md](../../CHANGELOG.md) и в раздел «Изменения» в
    [forum-topic.txt](forum-topic.txt): правила раздела требуют перечислять изменения новой версии в самой теме.
 2. Собрать релиз (тег `plugin-v<версия>`, например `plugin-v2.0.0`; версия должна совпадать с `plugin/src/pluginInfo.h`)
-   — CI выложит `.aimppack` в Releases и соберёт артефакты `aimp_remote_control-catalog` и
+   — CI выложит в Releases `.aimppack` и `aimp_remote_control-catalog.zip` и соберёт артефакт
    `aimp_remote_control-forum-topic`.
-3. Обновить первое сообщение темы текстом из артефакта `aimp_remote_control-forum-topic`, заменив вложенный
-   `aimp_remote_control.aimppack` на новую версию (лимит вложения 4 МБ; если не влезет — файлообменник или ссылка на
-   релиз).
-4. Выложить комплект (`zip` + `txt` + картинки) и сообщить в теме о готовности плагина к публикации в каталоге — так
-   описан порядок в правилах для обложек ([отбор обложек](https://www.aimp.ru/forum/index.php?topic=54949.msg337442)).
+3. Обновить первое сообщение темы текстом из артефакта `aimp_remote_control-forum-topic`. Ссылка на скачивание в нём
+   постоянная и сама ведёт на новый релиз.
+4. Сообщить в теме о готовности плагина к публикации в каталоге, дав ссылку на `aimp_remote_control-catalog.zip` из
+   релиза, — так описан порядок в правилах для обложек
+   ([отбор обложек](https://www.aimp.ru/forum/index.php?topic=54949.msg337442)).
