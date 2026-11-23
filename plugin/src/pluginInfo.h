@@ -24,3 +24,4 @@
 
 #define PLUGIN_AUTH_REALM "AIMP Remote Control"
 #define PLUGIN_REMOTE_CONTROL_VERSION "1.2.0.5"
+#define PLUGIN_MDNS_SERVICE_TYPE "_aimp-remote._tcp"

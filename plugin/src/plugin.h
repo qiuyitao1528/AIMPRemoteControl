@@ -3,6 +3,7 @@
 #include "apiPlugin.h"
 #include "IUnknownImpl.h"
 #include "listenerStatus.h"
+#include "mdnsAnnouncer.h"
 #include "networkWatcher.h"
 #include "optionsFrame.h"
 #include "player/playerFeatures.h"
@@ -30,6 +31,7 @@ private:
 	ListenerStatus FListenerStatus;
 	OptionsFrame *FOptionsFrame = nullptr;
 	AIMPServiceDiscoveryServer FDiscoveryServer;
+	MdnsAnnouncer FMdnsAnnouncer;
 	std::unique_ptr<AIMPRemoteControlServer> FRemoteControlServer;
 	RemoteControlIdManager FIdManager;
 	SharedSettings FSettings;

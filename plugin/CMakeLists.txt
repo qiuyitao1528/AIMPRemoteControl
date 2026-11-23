@@ -150,7 +150,9 @@ target_link_libraries(AIMPRemoteControlCode PUBLIC
   $<$<BOOL:${WIN32}>:iphlpapi>
   $<$<BOOL:${WIN32}>:ws2_32>
   # BCryptGenRandom for the key that signs the Digest nonces.
-  $<$<BOOL:${WIN32}>:bcrypt>)
+  $<$<BOOL:${WIN32}>:bcrypt>
+  # dlopen for libavahi-client, which the mDNS announcer takes at run time.
+  ${CMAKE_DL_LIBS})
 
 target_include_directories(AIMPRemoteControlCode PUBLIC
   "${CMAKE_SOURCE_DIR}/src"

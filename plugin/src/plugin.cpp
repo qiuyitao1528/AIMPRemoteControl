@@ -105,6 +105,7 @@ HRESULT WINAPI AIMPPlugin::Initialize(IAIMPCore *Core)
 		FSettings.Set(s);
 		FStateEvents.Notify(StateUpdateEvents::Settings);
 		FNetworkWatcher.SetExcludedInterfaces(s.Network.ExcludedInterfaces);
+		FMdnsAnnouncer.Refresh();
 		if (FRemoteControlServer)
 			FRemoteControlServer->ApplySettings(s); });
 	FOptionsFrame->AddRef();
@@ -197,6 +198,7 @@ HRESULT WINAPI AIMPPlugin::Initialize(IAIMPCore *Core)
 				dispatcher->Release(); }); });
 	FRemoteControlServer->ApplySettings(FSettings.Get());
 	FRemoteControlServer->Start();
+	FMdnsAnnouncer.Start(FNetworkWatcher, FListenerStatus, FSettings, AIMPRemoteControlServer::DefaultPort);
 	FNetworkWatcher.Start();
 	return S_OK;
 }
@@ -215,6 +217,7 @@ HRESULT WINAPI AIMPPlugin::Finalize()
 	}
 	FCoverIndex.reset();
 	FDiscoveryServer.Stop();
+	FMdnsAnnouncer.Stop();
 	if (FOptionsFrame)
 	{
 		FCore->UnregisterExtension(FOptionsFrame);

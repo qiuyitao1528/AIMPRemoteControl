@@ -65,7 +65,8 @@ std::vector<NetworkAddress> ListIPv4Addresses()
 			result.push_back({adapter->AdapterName ? adapter->AdapterName : "",
 							  WideToUtf8(adapter->FriendlyName),
 							  Ipv4ToString(reinterpret_cast<const sockaddr_in *>(sa)->sin_addr),
-							  loopback});
+							  loopback,
+							  adapter->IfIndex});
 		}
 	}
 #else
@@ -81,7 +82,8 @@ std::vector<NetworkAddress> ListIPv4Addresses()
 		result.push_back({ifa->ifa_name ? ifa->ifa_name : "",
 						  ifa->ifa_name ? ifa->ifa_name : "",
 						  Ipv4ToString(reinterpret_cast<const sockaddr_in *>(ifa->ifa_addr)->sin_addr),
-						  (ifa->ifa_flags & IFF_LOOPBACK) != 0});
+						  (ifa->ifa_flags & IFF_LOOPBACK) != 0,
+						  ifa->ifa_name ? if_nametoindex(ifa->ifa_name) : 0});
 	}
 	freeifaddrs(list);
 #endif
