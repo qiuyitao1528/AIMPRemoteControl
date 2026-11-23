@@ -486,7 +486,7 @@ struct AIMPRemoteControlServer::Impl : IEndpointRouteBuilder
 
 		if (const auto file = ResolveStaticFile(req.path))
 		{
-			res.set_file_content(file->string());
+			res.set_file_content(PathToUtf8(*file));
 			return;
 		}
 
@@ -494,7 +494,7 @@ struct AIMPRemoteControlServer::Impl : IEndpointRouteBuilder
 		const std::filesystem::path notFound = WwwRoot / "404.html";
 		std::error_code ec;
 		if (std::filesystem::is_regular_file(notFound, ec))
-			res.set_file_content(notFound.string());
+			res.set_file_content(PathToUtf8(notFound));
 	}
 
 	static void NormalizeParams(nlohmann::json &request)
