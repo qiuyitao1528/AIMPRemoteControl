@@ -22,4 +22,6 @@ foreach(source IN LISTS TEST_SOURCES)
   endif()
   add_dependencies(unit_tests ${name})
   add_test(NAME ${name} COMMAND ${name})
+  # What Skip of check.h returns.
+  set_tests_properties(${name} PROPERTIES SKIP_RETURN_CODE 77)
 endforeach()

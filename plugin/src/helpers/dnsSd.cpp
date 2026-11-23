@@ -25,31 +25,34 @@ namespace
 			WideCharToMultiByte(CP_UTF8, 0, text, static_cast<int>(units), nullptr, 0, nullptr, nullptr));
 	}
 
-	// The DNS-SD of Windows sends a label in lower case, some letters of it at least, and its limit is on what
-	// it sends. A character counts here for the longer of itself and its lower case as the system has that:
-	// there are letters whose lower case takes more bytes.
+	// The DNS-SD of Windows sends the letters of a label beyond ASCII in lower case. The label is given to it as
+	// it will send it: its limit is on what it sends, and it does not know a name for taken when that is there
+	// in other letters than the ones given, but makes one record of the two.
 	std::string LabelPrefix(const std::string &text, std::size_t maxBytes)
 	{
 		const int size = MultiByteToWideChar(CP_UTF8, 0, text.data(), static_cast<int>(text.size()), nullptr, 0);
-		std::wstring wide(static_cast<std::size_t>(size), L'\0');
-		MultiByteToWideChar(CP_UTF8, 0, text.data(), static_cast<int>(text.size()), wide.data(), size);
-		std::wstring lower = wide;
-		LCMapStringEx(LOCALE_NAME_INVARIANT, LCMAP_LOWERCASE, wide.data(), size, lower.data(), size, nullptr, nullptr, 0);
+		std::wstring given(static_cast<std::size_t>(size), L'\0');
+		MultiByteToWideChar(CP_UTF8, 0, text.data(), static_cast<int>(text.size()), given.data(), size);
+		std::wstring sent = given;
+		LCMapStringEx(LOCALE_NAME_INVARIANT, LCMAP_LOWERCASE, given.data(), size, sent.data(), size, nullptr, nullptr, 0);
+		for (std::size_t i = 0; i < sent.size(); ++i)
+			if (given[i] < 0x80)
+				sent[i] = given[i];
 
 		std::size_t kept = 0;
-		std::size_t sent = 0;
-		while (kept < wide.size())
+		std::size_t bytes = 0;
+		while (kept < sent.size())
 		{
-			const std::size_t units = kept + 1 < wide.size() && IS_SURROGATE_PAIR(wide[kept], wide[kept + 1]) ? 2 : 1;
-			const std::size_t width = std::max(Utf8Size(&wide[kept], units), Utf8Size(&lower[kept], units));
-			if (sent + width > maxBytes)
+			const std::size_t units = kept + 1 < sent.size() && IS_SURROGATE_PAIR(sent[kept], sent[kept + 1]) ? 2 : 1;
+			const std::size_t width = Utf8Size(&sent[kept], units);
+			if (bytes + width > maxBytes)
 				break;
-			sent += width;
+			bytes += width;
 			kept += units;
 		}
 
-		std::string prefix(Utf8Size(wide.data(), kept), '\0');
-		WideCharToMultiByte(CP_UTF8, 0, wide.data(), static_cast<int>(kept), prefix.data(), static_cast<int>(prefix.size()),
+		std::string prefix(bytes, '\0');
+		WideCharToMultiByte(CP_UTF8, 0, sent.data(), static_cast<int>(kept), prefix.data(), static_cast<int>(prefix.size()),
 							nullptr, nullptr);
 		return prefix;
 	}

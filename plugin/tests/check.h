@@ -19,3 +19,10 @@ inline int Finish()
 	std::printf("%s\n", checkFailures ? "FAILED" : "ALL PASSED");
 	return checkFailures ? 1 : 0;
 }
+
+// For a test the machine cannot run, which is not a failure: CTest is told that this exit code means skipped.
+inline int Skip(const char *reason)
+{
+	std::printf("SKIPPED: %s\n", reason);
+	return 77;
+}

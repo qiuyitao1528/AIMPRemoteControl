@@ -21,7 +21,6 @@ int main()
 {
 	Check("a short name is kept", DnsSdInstanceLabel("Living room") == "Living room");
 	Check("an empty name stays empty", DnsSdInstanceLabel("").empty());
-	Check("non-ASCII is kept", DnsSdInstanceLabel("Гостиная") == "Гостиная");
 	Check("dots become hyphens", DnsSdInstanceLabel("v2.0 of Mr. Smith") == "v2-0 of Mr- Smith");
 	Check("backslashes become hyphens", DnsSdInstanceLabel("HOME\\PC\\") == "HOME-PC-");
 	Check("a backslash left at the cut does too", DnsSdInstanceLabel(Repeat("x", 62) + "\\tail") == Repeat("x", 62) + "-");
@@ -39,18 +38,18 @@ int main()
 	Check("a dot past the cut does not matter", DnsSdInstanceLabel(Repeat("x", 63) + ".") == Repeat("x", 63));
 
 #ifdef _WIN32
-	// Windows sends a label in lower case, and its limit is on that. These letters take two bytes and their
-	// lower case three.
-	Check("21 letters growing to 63 bytes are kept", DnsSdInstanceLabel(Repeat("Ⱥ", 21)) == Repeat("Ⱥ", 21));
-	Check("the 22nd would be sent past the limit", DnsSdInstanceLabel(Repeat("Ⱥ", 22)) == Repeat("Ⱥ", 21));
-	Check("so with the other such letter", DnsSdInstanceLabel(Repeat("Ⱦ", 31)) == Repeat("Ⱦ", 21));
-	Check("a growing letter that does not fit is left out", DnsSdInstanceLabel(Repeat("x", 61) + "Ⱥ") == Repeat("x", 61));
-	Check("and one that does is kept", DnsSdInstanceLabel(Repeat("x", 60) + "Ⱥ") == Repeat("x", 60) + "Ⱥ");
-	// The Kelvin sign: three bytes, and one in lower case.
-	Check("a letter whose lower case is shorter counts as itself", DnsSdInstanceLabel(Repeat("\xE2\x84\xAA", 22)) == Repeat("\xE2\x84\xAA", 21));
+	// Windows sends the letters beyond ASCII in lower case, and is given the label so.
+	Check("letters beyond ASCII go to lower case", DnsSdInstanceLabel("Гостиная ÄÖ") == "гостиная äö");
 	Check("ASCII keeps its case", DnsSdInstanceLabel("Home PC") == "Home PC");
+	// These letters take two bytes and their lower case three: the limit is on the lower case.
+	Check("21 letters growing to 63 bytes are kept", DnsSdInstanceLabel(Repeat("Ⱥ", 21)) == Repeat("ⱥ", 21));
+	Check("the 22nd would be sent past the limit", DnsSdInstanceLabel(Repeat("Ⱥ", 22)) == Repeat("ⱥ", 21));
+	Check("so with the other such letter", DnsSdInstanceLabel(Repeat("Ⱦ", 31)) == Repeat("ⱦ", 21));
+	Check("a growing letter that does not fit is left out", DnsSdInstanceLabel(Repeat("x", 61) + "Ⱥ") == Repeat("x", 61));
+	Check("and one that does is kept", DnsSdInstanceLabel(Repeat("x", 60) + "Ⱥ") == Repeat("x", 60) + "ⱥ");
 #else
-	Check("where a label is sent as it is, such letters count as they are", DnsSdInstanceLabel(Repeat("Ⱥ", 31)) == Repeat("Ⱥ", 31));
+	Check("non-ASCII is kept", DnsSdInstanceLabel("Гостиная") == "Гостиная");
+	Check("where a label is sent as it is, a letter counts as it is", DnsSdInstanceLabel(Repeat("Ⱥ", 31)) == Repeat("Ⱥ", 31));
 #endif
 	Check("bytes that are no text do not overrun", DnsSdInstanceLabel(std::string(200, '\xBA') + "\xC8").size() <= 63);
 
