@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1 — 2026-11-23
+
+- Fixed: the web interface did not open when the path to the plugin had letters other than Latin.
+
 ## 2.0.0 — 2026-11-21
 
 AIMP can now be controlled from a browser on any device of the local network. The AIMP Remote Control app keeps working
