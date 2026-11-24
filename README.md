@@ -1,5 +1,8 @@
 # AIMP Remote Control
 
+> **本仓库是个人 fork，不是官方版本。** 这里在官方插件的基础上加了简体中文界面，说明见 [README-zh.md](README-zh.md)。
+> 本文件及以下内容是官方原版说明，未作改动。Official upstream: [tarcode-apps/AIMPRemoteControl](https://github.com/tarcode-apps/AIMPRemoteControl).
+
 An open-source plugin for remote control of [AIMP](https://www.aimp.ru/) over the local network: from a browser on a
 mobile, a tablet or another computer, or from the **AIMP Remote Control** Android app. It runs on both the Windows and
 the Linux builds of AIMP.
